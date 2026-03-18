@@ -1,14 +1,14 @@
 # Artere Test
 
-REST API for managing **categories** and **products** with hierarchical category structure.
+REST API for managing **categories**, **products**, and **shopping carts** with hierarchical category structure.
 
 ## Tech Stack
 
-Java 21, Spring Boot 3.4, Spring Data JPA, PostgreSQL, Flyway, SpringDoc OpenAPI (Swagger UI), Testcontainers, Docker Compose.
+Java 25, Spring Boot 3.4, Spring Data JPA, PostgreSQL, Flyway, SpringDoc OpenAPI (Swagger UI), Testcontainers, Docker Compose.
 
 ## Prerequisites
 
-- **Java 21+**
+- **Java 25+**
 - **Docker** & **Docker Compose**
 - **Maven 3.9+**
 
@@ -45,6 +45,45 @@ Open Swagger UI at: **http://localhost:8080/swagger-ui.html**
 4. Click **Save**
 
 > **Note:** The host is `artere-postgres` (the Docker container name), not `localhost`, because pgAdmin runs inside the same Docker network.
+
+## API Endpoints
+
+### Categories
+
+| Method   | URL                                                  | Description                      |
+|----------|------------------------------------------------------|----------------------------------|
+| `POST`   | `/api/categories`                                    | Create a category                |
+| `GET`    | `/api/categories`                                    | List all categories              |
+| `GET`    | `/api/categories/roots`                              | List root categories             |
+| `GET`    | `/api/categories/{id}`                               | Get a category by ID             |
+| `GET`    | `/api/categories/{id}/subcategories`                 | List sub-categories              |
+| `PUT`    | `/api/categories/{id}`                               | Update a category                |
+| `DELETE` | `/api/categories/{id}`                               | Delete a category                |
+| `PUT`    | `/api/categories/{parentId}/subcategories/{childId}` | Link a sub-category              |
+| `DELETE` | `/api/categories/{parentId}/subcategories/{childId}` | Unlink a sub-category            |
+
+### Products
+
+| Method   | URL                                               | Description                      |
+|----------|---------------------------------------------------|----------------------------------|
+| `POST`   | `/api/products`                                   | Create a product                 |
+| `GET`    | `/api/products`                                   | List all products                |
+| `GET`    | `/api/products/{id}`                              | Get a product by ID              |
+| `PUT`    | `/api/products/{id}`                              | Update a product                 |
+| `DELETE` | `/api/products/{id}`                              | Delete a product                 |
+| `PUT`    | `/api/products/{productId}/category/{categoryId}` | Assign product to a category     |
+| `DELETE` | `/api/products/{productId}/category`              | Remove product from its category |
+
+### Cart
+
+| Method   | URL                                    | Description                                          |
+|----------|----------------------------------------|------------------------------------------------------|
+| `POST`   | `/api/carts`                           | Create an empty cart                                 |
+| `GET`    | `/api/carts/{cartId}`                  | Get cart with items and total price                  |
+| `POST`   | `/api/carts/{cartId}/items`            | Add a product to the cart (merges if already present)|
+| `PUT`    | `/api/carts/{cartId}/items/{itemId}`   | Update item quantity                                 |
+| `DELETE` | `/api/carts/{cartId}/items/{itemId}`   | Remove an item from the cart                         |
+| `DELETE` | `/api/carts/{cartId}`                  | Delete entire cart                                   |
 
 ## Running Tests
 
